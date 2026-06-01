@@ -56,24 +56,13 @@ These modules provide a battle-tested foundation widely adopted throughout the b
 
 ## Deployment
 
-### Requirements
+### Contract Address
 
-* MetaMask Wallet
-* Remix IDE
-* EVM-Compatible Network
-* Testnet or Mainnet Native Gas Token
+0xB666923f0d722Da26BAB41314ED42455Fbf5d87A
 
-### Deploy with Remix
+### Explorer
 
-1. Open Remix IDE.
-2. Create a new file named `Nexus.sol`.
-3. Paste the contract source code.
-4. Select Solidity Compiler version `0.8.20`.
-5. Enable optimization (recommended: 200 runs).
-6. Compile the contract.
-7. Connect MetaMask using "Injected Provider".
-8. Select the desired network.
-9. Deploy the contract.
+https://testnet.iopn.tech/address/0xB666923f0d722Da26BAB41314ED42455Fbf5d87A
 
 ## Security
 
