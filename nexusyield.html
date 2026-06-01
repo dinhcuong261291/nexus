@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NexusYield — DeFi Protocol</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --g1:#0a0f1e;--g2:#0d1528;--g3:#111d38;
+    --accent:#00f5c4;--accent2:#6c63ff;--accent3:#f5a623;
+    --text:#e8edf7;--muted:#8892b0;--border:rgba(0,245,196,0.15);
+    --card:rgba(255,255,255,0.03);--card-border:rgba(255,255,255,0.07)
+  }
+  body{background:var(--g1);color:var(--text);font-family:'Syne',sans-serif;overflow-x:hidden;min-height:100vh}
+  .mono{font-family:'Space Mono',monospace}
+
+  nav{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 2.5rem;border-bottom:1px solid var(--border);backdrop-filter:blur(10px);position:sticky;top:0;z-index:100;background:rgba(10,15,30,0.85)}
+  .logo{font-size:1.3rem;font-weight:800;letter-spacing:-0.5px}
+  .logo span{color:var(--accent)}
+  .nav-links{display:flex;gap:2rem;list-style:none}
+  .nav-links a{color:var(--muted);text-decoration:none;font-size:0.85rem;font-weight:400;letter-spacing:0.05em;text-transform:uppercase;transition:color .2s}
+  .nav-links a:hover{color:var(--accent)}
+  .nav-cta{background:var(--accent);color:#0a0f1e;border:none;padding:0.6rem 1.4rem;border-radius:4px;font-family:'Syne',sans-serif;font-weight:700;font-size:0.85rem;cursor:pointer;letter-spacing:0.03em;transition:opacity .2s}
+  .nav-cta:hover{opacity:0.85}
+
+  .hero{padding:5rem 2.5rem 4rem;max-width:1100px;margin:0 auto;position:relative}
+  .hero-badge{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(0,245,196,0.08);border:1px solid rgba(0,245,196,0.2);border-radius:100px;padding:0.35rem 1rem;font-size:0.75rem;color:var(--accent);font-family:'Space Mono',monospace;margin-bottom:2rem;letter-spacing:0.05em}
+  .badge-dot{width:6px;height:6px;background:var(--accent);border-radius:50%;animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+  h1{font-size:clamp(2.8rem,6vw,5.2rem);font-weight:800;line-height:1.05;letter-spacing:-2px;margin-bottom:1.5rem}
+  h1 .line2{color:var(--accent)}
+  .hero-sub{font-size:1.1rem;color:var(--muted);max-width:540px;line-height:1.7;margin-bottom:2.5rem;font-weight:400}
+  .hero-actions{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:4rem}
+  .btn-primary{background:var(--accent);color:#0a0f1e;border:none;padding:0.85rem 2rem;border-radius:4px;font-family:'Syne',sans-serif;font-weight:700;font-size:0.95rem;cursor:pointer;transition:all .2s}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,245,196,0.3)}
+  .btn-outline{background:transparent;color:var(--text);border:1px solid var(--card-border);padding:0.85rem 2rem;border-radius:4px;font-family:'Syne',sans-serif;font-weight:700;font-size:0.95rem;cursor:pointer;transition:all .2s}
+  .btn-outline:hover{border-color:var(--accent);color:var(--accent)}
+
+  .stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:5rem}
+  .stat-cell{background:var(--g1);padding:1.5rem 1.75rem}
+  .stat-label{font-size:0.75rem;color:var(--muted);font-family:'Space Mono',monospace;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.5rem}
+  .stat-value{font-size:1.8rem;font-weight:800;letter-spacing:-1px}
+  .stat-value.green{color:var(--accent)}
+  .stat-value.purple{color:var(--accent2)}
+  .stat-value.amber{color:var(--accent3)}
+  .stat-change{font-size:0.75rem;font-family:'Space Mono',monospace;color:var(--accent);margin-top:0.25rem}
+
+  .section{padding:4rem 2.5rem;max-width:1100px;margin:0 auto}
+  .section-label{font-size:0.75rem;font-family:'Space Mono',monospace;color:var(--accent);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.75rem}
+  .section-title{font-size:2.2rem;font-weight:800;letter-spacing:-1px;margin-bottom:3rem}
+  .features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1px;background:var(--card-border)}
+  .feature-card{background:var(--g2);padding:2rem;transition:background .2s;cursor:default}
+  .feature-card:hover{background:var(--g3)}
+  .feat-icon{width:44px;height:44px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem;font-size:1.3rem}
+  .feat-icon.teal{background:rgba(0,245,196,0.1);color:var(--accent)}
+  .feat-icon.purple{background:rgba(108,99,255,0.1);color:var(--accent2)}
+  .feat-icon.amber{background:rgba(245,166,35,0.1);color:var(--accent3)}
+  .feat-icon.red{background:rgba(255,80,80,0.1);color:#ff5050}
+  .feature-card h3{font-size:1rem;font-weight:700;margin-bottom:0.6rem;letter-spacing:-0.3px}
+  .feature-card p{font-size:0.875rem;color:var(--muted);line-height:1.65}
+
+  .pools-section{padding:4rem 2.5rem;max-width:1100px;margin:0 auto}
+  .pool-table{width:100%;border-collapse:collapse;border:1px solid var(--card-border);border-radius:8px;overflow:hidden}
+  .pool-table th{background:var(--g3);padding:0.85rem 1.25rem;text-align:left;font-size:0.72rem;font-family:'Space Mono',monospace;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;border-bottom:1px solid var(--card-border)}
+  .pool-table td{padding:1rem 1.25rem;border-bottom:1px solid rgba(255,255,255,0.04);font-size:0.88rem}
+  .pool-table tr:last-child td{border-bottom:none}
+  .pool-table tr:hover td{background:rgba(255,255,255,0.02)}
+  .pool-pair{display:flex;align-items:center;gap:0.6rem;font-weight:700}
+  .token-icons{display:flex}
+  .token-icon{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;border:2px solid var(--g2);margin-left:-8px}
+  .token-icon:first-child{margin-left:0}
+  .t-eth{background:#627eea;color:#fff}
+  .t-usdc{background:#2775ca;color:#fff}
+  .t-btc{background:#f7931a;color:#fff}
+  .t-bnb{background:#f3ba2f;color:#0a0f1e}
+  .t-sol{background:#9945ff;color:#fff}
+  .t-matic{background:#8247e5;color:#fff}
+  .apy-val{color:var(--accent);font-family:'Space Mono',monospace;font-weight:700}
+  .tvl-val{font-family:'Space Mono',monospace}
+  .badge-pool{background:rgba(0,245,196,0.08);border:1px solid rgba(0,245,196,0.2);color:var(--accent);font-size:0.68rem;padding:0.2rem 0.6rem;border-radius:4px;font-family:'Space Mono',monospace}
+  .badge-hot{background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.25);color:var(--accent3);font-size:0.68rem;padding:0.2rem 0.6rem;border-radius:4px;font-family:'Space Mono',monospace}
+  .deposit-btn{background:transparent;border:1px solid var(--card-border);color:var(--muted);padding:0.35rem 0.9rem;border-radius:4px;font-family:'Syne',sans-serif;font-size:0.78rem;cursor:pointer;transition:all .2s}
+  .deposit-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+  .hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(0,245,196,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,245,196,0.03) 1px,transparent 1px);background-size:50px 50px;z-index:-1;pointer-events:none}
+
+  .cta-banner{margin:4rem auto;max-width:1100px;padding:0 2.5rem}
+  .cta-inner{background:var(--g3);border:1px solid var(--border);border-radius:12px;padding:3rem;text-align:center}
+  .cta-inner h2{font-size:2rem;font-weight:800;letter-spacing:-1px;margin-bottom:1rem}
+  .cta-inner p{color:var(--muted);margin-bottom:2rem;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.6}
+
+  footer{border-top:1px solid var(--border);padding:2rem 2.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+  .footer-logo{font-size:1rem;font-weight:800;font-family:'Space Mono',monospace}
+  .footer-logo span{color:var(--accent)}
+  .footer-text{font-size:0.78rem;color:var(--muted);font-family:'Space Mono',monospace}
+  .footer-links{display:flex;gap:1.5rem}
+  .footer-links a{color:var(--muted);text-decoration:none;font-size:0.8rem;font-family:'Space Mono',monospace;transition:color .2s}
+  .footer-links a:hover{color:var(--accent)}
+
+  .ticker{background:var(--g3);border-bottom:1px solid var(--border);overflow:hidden;white-space:nowrap;padding:0.5rem 0}
+  .ticker-inner{display:inline-flex;gap:3rem;animation:ticker 30s linear infinite}
+  @keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  .ticker-item{font-size:0.75rem;font-family:'Space Mono',monospace;color:var(--muted);display:inline-flex;align-items:center;gap:0.4rem}
+  .ticker-item .up{color:var(--accent)}
+  .ticker-item .down{color:#ff5050}
+
+  @media(max-width:768px){
+    nav{padding:1rem 1.25rem}
+    .nav-links{display:none}
+    .hero{padding:3rem 1.25rem 2rem}
+    h1{font-size:2.4rem;letter-spacing:-1px}
+    .stats-row{grid-template-columns:1fr 1fr}
+    .section,.pools-section{padding:2.5rem 1.25rem}
+    .pool-table{font-size:0.8rem}
+    .pool-table th,.pool-table td{padding:0.7rem 0.75rem}
+    footer{flex-direction:column;text-align:center}
+  }
+</style>
+</head>
+<body>
+
+<!-- Live ticker -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-inner">
+    <span class="ticker-item">ETH/USDC <span class="up">▲ +2.34%</span></span>
+    <span class="ticker-item">BTC/USDC <span class="up">▲ +1.87%</span></span>
+    <span class="ticker-item">NEXUS APY <span class="up">47.2%</span></span>
+    <span class="ticker-item">SOL/USDC <span class="down">▼ -0.54%</span></span>
+    <span class="ticker-item">TVL <span class="up">$1.47B</span></span>
+    <span class="ticker-item">MATIC/ETH <span class="up">▲ +3.12%</span></span>
+    <span class="ticker-item">BNB/USDC <span class="up">▲ +0.93%</span></span>
+    <span class="ticker-item">Gas: 18 Gwei</span>
+    <!-- duplicate for seamless loop -->
+    <span class="ticker-item">ETH/USDC <span class="up">▲ +2.34%</span></span>
+    <span class="ticker-item">BTC/USDC <span class="up">▲ +1.87%</span></span>
+    <span class="ticker-item">NEXUS APY <span class="up">47.2%</span></span>
+    <span class="ticker-item">SOL/USDC <span class="down">▼ -0.54%</span></span>
+    <span class="ticker-item">TVL <span class="up">$1.47B</span></span>
+    <span class="ticker-item">MATIC/ETH <span class="up">▲ +3.12%</span></span>
+    <span class="ticker-item">BNB/USDC <span class="up">▲ +0.93%</span></span>
+    <span class="ticker-item">Gas: 18 Gwei</span>
+  </div>
+</div>
+
+<!-- Navigation -->
+<nav>
+  <div class="logo mono">Nexus<span>Yield</span></div>
+  <ul class="nav-links">
+    <li><a href="#">Pools</a></li>
+    <li><a href="#">Stake</a></li>
+    <li><a href="#">Governance</a></li>
+    <li><a href="#">Analytics</a></li>
+    <li><a href="#">Docs</a></li>
+  </ul>
+  <button class="nav-cta">Connect Wallet</button>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-badge">
+    <span class="badge-dot"></span>
+    <span>Protocol live on Ethereum &amp; Arbitrum</span>
+  </div>
+  <h1>
+    Maximum yield.<br>
+    <span class="line2">Minimum risk.</span><br>
+    Fully decentralized.
+  </h1>
+  <p class="hero-sub">
+    NexusYield automatically optimizes your liquidity across dozens of DeFi protocols—highest yields, maximum security, fully trustless.
+  </p>
+  <div class="hero-actions">
+    <button class="btn-primary">Start earning →</button>
+    <button class="btn-outline">Read whitepaper</button>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-cell">
+      <div class="stat-label">Total Liquidity (TVL)</div>
+      <div class="stat-value green">$1.47B</div>
+      <div class="stat-change">▲ +12.4% this week</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-label">Average APY</div>
+      <div class="stat-value amber">47.2%</div>
+      <div class="stat-change">▲ +3.1% vs yesterday</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-label">Active Users</div>
+      <div class="stat-value purple">84,291</div>
+      <div class="stat-change">▲ +2,140 this week</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-label">Rewards Paid Out</div>
+      <div class="stat-value green">$312M</div>
+      <div class="stat-change">Since launch</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-label">Security Audits</div>
+      <div class="stat-value" style="font-size:1.4rem">✓ 4/4</div>
+      <div class="stat-change" style="color:var(--muted)">Trail of Bits · Certik</div>
+    </div>
+  </div>
+</div>
+
+<!-- Liquidity Pools -->
+<div class="pools-section">
+  <div class="section-label">Liquidity Pools</div>
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:1.5rem">
+    <div class="section-title" style="margin-bottom:0">Active Pools</div>
+    <button class="btn-outline" style="font-size:0.8rem;padding:0.5rem 1.2rem">View all →</button>
+  </div>
+  <table class="pool-table">
+    <thead>
+      <tr>
+        <th>Pool</th>
+        <th>TVL</th>
+        <th>APY</th>
+        <th>Volume 24h</th>
+        <th>Fee</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <div class="pool-pair">
+            <div class="token-icons">
+              <div class="token-icon t-eth">ETH</div>
+              <div class="token-icon t-usdc">USDC</div>
+            </div>
+            ETH/USDC
+            <span class="badge-pool">Stable</span>
+          </div>
+        </td>
+        <td class="tvl-val">$487.3M</td>
+        <td class="apy-val">23.8%</td>
+        <td class="tvl-val">$91.2M</td>
+        <td style="color:var(--muted);font-family:'Space Mono',monospace;font-size:0.82rem">0.05%</td>
+        <td><button class="deposit-btn">Deposit</button></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="pool-pair">
+            <div class="token-icons">
+              <div class="token-icon t-btc">BTC</div>
+              <div class="token-icon t-usdc">USDC</div>
+            </div>
+            BTC/USDC
+            <span class="badge-hot">🔥 Hot</span>
+          </div>
+        </td>
+        <td class="tvl-val">$312.1M</td>
+        <td class="apy-val">47.2%</td>
+        <td class="tvl-val">$145.8M</td>
+        <td style="color:var(--muted);font-family:'Space Mono',monospace;font-size:0.82rem">0.30%</td>
+        <td><button class="deposit-btn">Deposit</button></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="pool-pair">
+            <div class="token-icons">
+              <div class="token-icon t-sol">SOL</div>
+              <div class="token-icon t-eth">ETH</div>
+            </div>
+            SOL/ETH
+          </div>
+        </td>
+        <td class="tvl-val">$218.4M</td>
+        <td class="apy-val">38.5%</td>
+        <td class="tvl-val">$67.4M</td>
+        <td style="color:var(--muted);font-family:'Space Mono',monospace;font-size:0.82rem">0.30%</td>
+        <td><button class="deposit-btn">Deposit</button></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="pool-pair">
+            <div class="token-icons">
+              <div class="token-icon t-bnb">BNB</div>
+              <div class="token-icon t-usdc">USDC</div>
+            </div>
+            BNB/USDC
+          </div>
+        </td>
+        <td class="tvl-val">$176.9M</td>
+        <td class="apy-val">31.7%</td>
+        <td class="tvl-val">$43.1M</td>
+        <td style="color:var(--muted);font-family:'Space Mono',monospace;font-size:0.82rem">0.30%</td>
+        <td><button class="deposit-btn">Deposit</button></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="pool-pair">
+            <div class="token-icons">
+              <div class="token-icon t-matic">MATIC</div>
+              <div class="token-icon t-eth">ETH</div>
+            </div>
+            MATIC/ETH
+            <span class="badge-hot">🔥 Hot</span>
+          </div>
+        </td>
+        <td class="tvl-val">$98.7M</td>
+        <td class="apy-val">62.4%</td>
+        <td class="tvl-val">$29.3M</td>
+        <td style="color:var(--muted);font-family:'Space Mono',monospace;font-size:0.82rem">1.00%</td>
+        <td><button class="deposit-btn">Deposit</button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Features -->
+<div class="section">
+  <div class="section-label">Features</div>
+  <div class="section-title">Built for performance</div>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feat-icon teal">⚡</div>
+      <h3>Automated yield optimization</h3>
+      <p>Our algorithm automatically reallocates your capital to the highest-yield pools every 4 hours—no manual intervention required.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feat-icon purple">🔐</div>
+      <h3>Multi-layer security</h3>
+      <p>Audited by Trail of Bits and Certik. 48-hour multisig timelock on all critical protocol upgrades.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feat-icon amber">🏛️</div>
+      <h3>Decentralized governance</h3>
+      <p>Hold NEXUS tokens to vote on proposals, allocate rewards, and shape the strategic direction of the protocol.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feat-icon red">🛡️</div>
+      <h3>Impermanent loss protection</h3>
+      <p>A $28M insurance fund runs continuously to protect users from impermanent loss risk in high-volatility pools.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feat-icon teal">⛓️</div>
+      <h3>Multi-chain</h3>
+      <p>Operates seamlessly across Ethereum, Arbitrum, Optimism, and Polygon. Bridge assets with no additional fees.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feat-icon purple">📊</div>
+      <h3>Real-time analytics</h3>
+      <p>Detailed dashboard with APY charts, transaction history, portfolio performance, and AI-powered yield forecasts.</p>
+    </div>
+  </div>
+</div>
+
+<!-- CTA Banner -->
+<div class="cta-banner">
+  <div class="cta-inner">
+    <h2>Start earning today</h2>
+    <p>Connect your wallet and begin your DeFi journey—no KYC, no permissions, fully decentralized.</p>
+    <button class="btn-primary">Connect wallet →</button>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-logo">Nexus<span>Yield</span></div>
+  <div class="footer-text">© 2026 NexusYield Protocol · Open Source · MIT License</div>
+  <div class="footer-links">
+    <a href="#">Twitter</a>
+    <a href="#">Discord</a>
+    <a href="#">GitHub</a>
+    <a href="#">Docs</a>
+  </div>
+</footer>
+
+</body>
+</html>
